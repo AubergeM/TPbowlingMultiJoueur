@@ -11,12 +11,12 @@ public class MultiPlayerGameTest {
 
 	public void setUp(){
 		partie = new PartieMultiJoueur();
-		lesJoueurs = new String[]{"Lily Dupont", "Camille Durand"};
+		lesJoueurs = new String[]{"Lily Dupont", "Camille Dupond"};
 	}
 
 	@Test
 	void testDemarrerPartie(){
-		assertEquals(partie.demarreNouvellePartie(lesJoueurs), "Prochain tir: joueur Lily Durant Boule, tour n° 1, boule n° 1", "Ce n'est pas le bon tour/joueur/lancer");
+		assertEquals(partie.demarreNouvellePartie(lesJoueurs), "Prochain tir: joueur Didier Boule, tour n° 1, boule n° 1", "Ce n'est pas le bon tour/joueur/lancer");
 	}
 
 	@Test
@@ -27,13 +27,14 @@ public class MultiPlayerGameTest {
 	}
 
 
+
 	@Test
 	void testEnregistreLancer() {
 		partie.demarreNouvellePartie(lesJoueurs);
 		// Premier lancer du premier joueur
 		assertEquals("Prochain tir: joueur Lily Durant, tour n° 1, boule n° 2", partie.enregistreLancer(9), "Ce n'est pas le bon tour/joueur/lancer");
 		// Deuxième lancer du premier joueur
-		assertEquals("Prochain tir: joueur Camille Durand, tour n° 1, boule n° 1", partie.enregistreLancer(1), "Ce n'est pas le bon tour/joueur/lancer");
+		assertEquals("Prochain tir: joueur Camille Dupond, tour n° 1, boule n° 1", partie.enregistreLancer(1), "Ce n'est pas le bon tour/joueur/lancer");
 		// Premier lancer du deuxième joueur
 		assertEquals("Prochain tir: joueur Lily Durant, tour n° 2, boule n° 1", partie.enregistreLancer(10), "Ce n'est pas le bon tour/joueur/lancer");
 		
@@ -45,6 +46,14 @@ public class MultiPlayerGameTest {
 		assertEquals("Partie terminée", partie.enregistreLancer(10), "La partie doit être terminée");
 		// Vérifier qu'une exception est levée si on essaie de lancer après la fin de la partie
 		assertThrows(IllegalStateException.class, () -> partie.enregistreLancer(1), "On ne doit pas pouvoir lancer après la fin de la partie");
+	}
+
+	@Test
+	void testScore(){
+		partie.demarreNouvellePartie(lesJoueurs);
+		partie.enregistreLancer(3);
+		assertEquals(partie.scorePour("Lily Durant"), 3, "Le score n'est pas bon pour ce joueur");
+		assertThrows(IllegalArgumentException.class, () -> {partie.scorePour("Camille Lupond");}, "Ce joueur n'existe pas");
 	}
 	
 }
